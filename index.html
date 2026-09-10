@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pranav Bhawsar — AI Engineer</title>
+<meta name="description" content="Pranav Bhawsar — AI Engineer in Jaipur, India. Building production multi-agent systems, RAG pipelines and LLM orchestration with FastAPI, LangGraph and Kafka.">
+<meta name="author" content="Pranav Bhawsar">
+<link rel="canonical" href="https://pranavbh1.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Pranav Bhawsar — AI Engineer">
+<meta property="og:description" content="Production multi-agent systems, RAG pipelines and LLM orchestration.">
+<meta property="og:url" content="https://pranavbh1.github.io/">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/137757814?v=4">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b0c0f'/><text y='.9em' x='50%25' text-anchor='middle' font-size='58' font-family='monospace' fill='%235ee9b5'>P</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ---------- tokens ---------- */
+:root{
+  --bg:#0b0c0f; --bg-soft:#101216; --surface:#14161c; --surface-2:#191c23;
+  --border:#242833; --border-soft:#1c1f27;
+  --text:#e8ebf0; --text-dim:#a2aab8; --text-faint:#6e7683;
+  --accent:#5ee9b5; --accent-dim:#2fb98c; --accent-glow:rgba(94,233,181,.13);
+  --accent-2:#7aa2f7;
+  --radius:14px; --radius-sm:9px;
+  --max:1080px;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 30px rgba(0,0,0,.35);
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+html[data-theme="light"]{
+  --bg:#fbfbfa; --bg-soft:#f4f4f2; --surface:#ffffff; --surface-2:#f7f7f5;
+  --border:#e2e2dd; --border-soft:#ececE7;
+  --text:#16181d; --text-dim:#565d68; --text-faint:#878e99;
+  --accent:#0f9c73; --accent-dim:#0b7a59; --accent-glow:rgba(15,156,115,.10);
+  --accent-2:#3b62c4;
+  --shadow:0 1px 2px rgba(16,24,40,.05),0 8px 24px rgba(16,24,40,.06);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+body{
+  margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);
+  font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;
+  transition:background .25s ease,color .25s ease;overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.wrap{width:100%;max-width:var(--max);margin-inline:auto;padding-inline:22px}
+.mono{font-family:var(--mono)}
+.skip{position:absolute;left:-9999px;top:0;background:var(--accent);color:#04120d;padding:10px 16px;z-index:200;border-radius:0 0 8px 0}
+.skip:focus{left:0}
+
+/* ---------- nav ---------- */
+header.nav{
+  position:sticky;top:0;z-index:100;
+  background:color-mix(in srgb,var(--bg) 82%,transparent);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid transparent;transition:border-color .25s ease;
+}
+header.nav.scrolled{border-bottom-color:var(--border-soft)}
+.nav-in{display:flex;align-items:center;gap:18px;height:62px}
+.brand{font-family:var(--mono);font-weight:600;font-size:15px;letter-spacing:-.2px;display:flex;align-items:center;gap:9px;margin-right:auto}
+.brand .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-glow);flex:none}
+.brand span{color:var(--text-faint)}
+nav.links{display:flex;gap:4px}
+nav.links a{
+  font-size:13.5px;color:var(--text-dim);padding:7px 11px;border-radius:8px;
+  transition:color .18s,background .18s;font-weight:500;
+}
+nav.links a:hover{color:var(--text);background:var(--surface-2)}
+nav.links a.active{color:var(--accent)}
+.icon-btn{
+  width:36px;height:36px;flex:none;display:grid;place-items:center;cursor:pointer;
+  background:var(--surface);border:1px solid var(--border);border-radius:9px;color:var(--text-dim);
+  transition:color .18s,border-color .18s,transform .18s;
+}
+.icon-btn:hover{color:var(--accent);border-color:var(--accent-dim);transform:translateY(-1px)}
+.icon-btn svg{width:16px;height:16px}
+html[data-theme="dark"] .i-sun{display:block}
+html[data-theme="dark"] .i-moon{display:none}
+html[data-theme="light"] .i-sun{display:none}
+html[data-theme="light"] .i-moon{display:block}
+@media (max-width:720px){nav.links{display:none}}
+
+/* ---------- sections ---------- */
+section{padding-block:74px;scroll-margin-top:70px}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:34px}
+.sec-head h2{font-size:clamp(22px,3.4vw,28px);margin:0;letter-spacing:-.5px;font-weight:650}
+.sec-head .num{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:500;flex:none}
+.sec-head .rule{flex:1;height:1px;background:var(--border);min-width:20px}
+
+/* ---------- hero ---------- */
+.hero{padding-block:clamp(58px,11vw,108px) 62px;position:relative}
+.hero::before{
+  content:"";position:absolute;inset:-160px 0 auto 0;height:520px;pointer-events:none;z-index:-1;
+  background:radial-gradient(58% 62% at 22% 0%,var(--accent-glow),transparent 70%);
+}
+.hero-grid{display:grid;grid-template-columns:1fr auto;gap:46px;align-items:center}
+@media (max-width:820px){.hero-grid{grid-template-columns:1fr;gap:34px}}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:12.5px;
+  color:var(--accent);border:1px solid var(--border);background:var(--surface);
+  padding:5px 12px;border-radius:999px;margin-bottom:22px;
+}
+.eyebrow .pulse{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 var(--accent-glow)}50%{opacity:.55;box-shadow:0 0 0 6px transparent}}
+h1{
+  font-size:clamp(38px,7.2vw,64px);line-height:1.04;letter-spacing:-2px;margin:0 0 16px;font-weight:700;
+}
+h1 .accent{
+  background:linear-gradient(96deg,var(--accent),var(--accent-2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.role{font-family:var(--mono);font-size:clamp(14px,2.2vw,17px);color:var(--text-dim);margin:0 0 20px;font-weight:500}
+.role b{color:var(--text);font-weight:600}
+.lede{font-size:clamp(15.5px,1.9vw,17.5px);color:var(--text-dim);max-width:60ch;margin:0 0 30px}
+.lede strong{color:var(--text);font-weight:600}
+.cta{display:flex;flex-wrap:wrap;gap:11px;margin-bottom:26px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;padding:11px 19px;border-radius:10px;
+  font-size:14.5px;font-weight:600;border:1px solid transparent;cursor:pointer;
+  transition:transform .18s,box-shadow .18s,background .18s,border-color .18s,color .18s;
+}
+.btn svg{width:16px;height:16px;flex:none}
+.btn-primary{background:var(--accent);color:#04140e;box-shadow:0 4px 18px var(--accent-glow)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 26px var(--accent-glow)}
+.btn-ghost{background:var(--surface);border-color:var(--border);color:var(--text)}
+.btn-ghost:hover{border-color:var(--accent-dim);color:var(--accent);transform:translateY(-2px)}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:13.5px;color:var(--text-faint);font-family:var(--mono)}
+.meta-row span{display:inline-flex;align-items:center;gap:7px}
+.meta-row svg{width:14px;height:14px;opacity:.8}
+
+/* avatar / terminal card */
+.avatar-col{display:flex;flex-direction:column;align-items:center;gap:16px}
+.avatar{
+  width:clamp(140px,22vw,182px);aspect-ratio:1;border-radius:20px;object-fit:cover;
+  border:1px solid var(--border);box-shadow:var(--shadow);background:var(--surface);
+}
+.avatar-fb{display:grid;place-items:center;font-family:var(--mono);font-size:clamp(44px,7vw,58px);font-weight:600;
+  color:var(--accent);background:linear-gradient(150deg,var(--surface),var(--surface-2));letter-spacing:-2px}
+.avatar-fb[hidden]{display:none}
+.term{
+  width:100%;max-width:330px;background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;overflow:hidden;box-shadow:var(--shadow);font-family:var(--mono);font-size:12.5px;
+}
+.term-bar{display:flex;gap:6px;padding:9px 12px;border-bottom:1px solid var(--border-soft);background:var(--surface-2)}
+.term-bar i{width:9px;height:9px;border-radius:50%;background:var(--border);display:block}
+.term-bar i:first-child{background:#ff5f57}.term-bar i:nth-child(2){background:#febc2e}.term-bar i:nth-child(3){background:#28c840}
+.term-body{padding:13px 14px;line-height:1.85;color:var(--text-dim)}
+.term-body .k{color:var(--accent-2)}
+.term-body .v{color:var(--accent)}
+.term-body .c{color:var(--text-faint)}
+
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border-soft);
+  border:1px solid var(--border-soft);border-radius:var(--radius);overflow:hidden;margin-top:6px}
+@media (max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--surface);padding:20px 18px;text-align:center}
+.stat b{display:block;font-family:var(--mono);font-size:clamp(20px,3.4vw,26px);color:var(--accent);font-weight:600;letter-spacing:-.5px}
+.stat span{font-size:12.5px;color:var(--text-faint);letter-spacing:.2px}
+
+/* ---------- about ---------- */
+.about-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:38px}
+@media (max-width:820px){.about-grid{grid-template-columns:1fr;gap:26px}}
+.about-grid p{color:var(--text-dim);margin:0 0 15px;font-size:15.5px}
+.about-grid p strong{color:var(--text);font-weight:600}
+.facts{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:6px 20px;height:fit-content}
+.fact{display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid var(--border-soft);font-size:14px}
+.fact:last-child{border-bottom:0}
+.fact dt{color:var(--text-faint);font-family:var(--mono);font-size:12.5px;margin:0}
+.fact dd{margin:0;text-align:right;font-weight:500}
+
+/* ---------- timeline ---------- */
+.tl{position:relative;padding-left:30px}
+.tl::before{content:"";position:absolute;left:6px;top:8px;bottom:8px;width:1px;background:var(--border)}
+.tl-item{position:relative;padding-bottom:34px}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::before{
+  content:"";position:absolute;left:-28px;top:7px;width:11px;height:11px;border-radius:50%;
+  background:var(--bg);border:2px solid var(--accent-dim);
+}
+.tl-item.now::before{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 5px var(--accent-glow)}
+.tl-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin-bottom:4px}
+.tl-top h3{margin:0;font-size:17.5px;font-weight:650;letter-spacing:-.3px}
+.tl-org{color:var(--accent);font-weight:600;font-size:15px}
+.tl-date{font-family:var(--mono);font-size:12.5px;color:var(--text-faint);margin-left:auto;white-space:nowrap}
+.tl-item p{color:var(--text-dim);margin:6px 0 12px;font-size:15px}
+@media (max-width:600px){.tl-date{margin-left:0;width:100%}}
+
+/* ---------- chips ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{
+  font-family:var(--mono);font-size:11.5px;padding:3.5px 9px;border-radius:6px;
+  background:var(--surface-2);border:1px solid var(--border-soft);color:var(--text-dim);white-space:nowrap;
+}
+.chip.hi{color:var(--accent);border-color:var(--accent-dim);background:var(--accent-glow)}
+
+/* ---------- project cards ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px}
+.card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:22px;display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden;
+  transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+}
+.card::after{
+  content:"";position:absolute;inset:0 0 auto 0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;transition:opacity .25s;
+}
+.card:hover{transform:translateY(-3px);border-color:var(--border);box-shadow:var(--shadow)}
+.card:hover::after{opacity:.7}
+.card-top{display:flex;align-items:flex-start;gap:12px}
+.card-ico{
+  width:36px;height:36px;flex:none;border-radius:9px;display:grid;place-items:center;
+  background:var(--accent-glow);color:var(--accent);border:1px solid var(--border-soft);
+}
+.card-ico svg{width:18px;height:18px}
+.card h3{margin:0;font-size:16.5px;font-weight:650;letter-spacing:-.3px;line-height:1.35}
+.card .tag{font-family:var(--mono);font-size:11px;color:var(--text-faint);display:block;margin-top:3px}
+.card p{margin:0;color:var(--text-dim);font-size:14.5px;flex:1}
+.card .links{display:flex;gap:14px;font-size:13px;font-family:var(--mono)}
+.card .links a{color:var(--accent);display:inline-flex;align-items:center;gap:5px;transition:gap .18s}
+.card .links a:hover{gap:8px}
+.card .links svg{width:13px;height:13px}
+
+/* repo grid */
+.repos{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.repo{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px 17px;
+  display:flex;flex-direction:column;gap:7px;transition:transform .18s,border-color .18s;
+}
+.repo:hover{transform:translateY(-2px);border-color:var(--accent-dim)}
+.repo b{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--accent);word-break:break-word}
+.repo p{margin:0;font-size:13.5px;color:var(--text-dim);flex:1;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.repo .foot{display:flex;gap:14px;font-size:12px;color:var(--text-faint);font-family:var(--mono);align-items:center}
+.repo .lang{display:inline-flex;align-items:center;gap:6px}
+.repo .lang i{width:9px;height:9px;border-radius:50%;background:var(--accent-2);display:block}
+.loading{color:var(--text-faint);font-family:var(--mono);font-size:13.5px;padding:8px 0}
+
+/* ---------- skills ---------- */
+.skills{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:16px}
+.skill{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:19px 20px}
+.skill h3{margin:0 0 13px;font-size:12.5px;font-family:var(--mono);color:var(--accent);font-weight:500;letter-spacing:.4px;text-transform:uppercase}
+
+/* ---------- contact ---------- */
+.contact{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:clamp(28px,5vw,46px);text-align:center;position:relative;overflow:hidden;
+}
+.contact::before{content:"";position:absolute;inset:auto 0 -60% 0;height:200px;
+  background:radial-gradient(50% 100% at 50% 100%,var(--accent-glow),transparent 70%);pointer-events:none}
+.contact h2{font-size:clamp(24px,4vw,32px);margin:0 0 12px;letter-spacing:-.8px}
+.contact p{color:var(--text-dim);max-width:52ch;margin:0 auto 26px;font-size:15.5px}
+.contact .cta{justify-content:center}
+.copy-note{font-family:var(--mono);font-size:12px;color:var(--accent);height:16px;margin-top:14px}
+
+footer{border-top:1px solid var(--border-soft);padding-block:26px;margin-top:36px}
+.foot-in{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;
+  font-size:13px;color:var(--text-faint);font-family:var(--mono)}
+.foot-in a:hover{color:var(--accent)}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top"><span class="dot"></span>pranav<span>.bhawsar</span></a>
+    <nav class="links" id="navlinks">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#opensource">Open Source</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="icon-btn" id="theme" aria-label="Toggle colour theme" title="Toggle theme">
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+<a id="top"></a>
+
+<!-- HERO -->
+<section class="hero wrap" style="padding-top:clamp(46px,9vw,88px)">
+  <div class="hero-grid">
+    <div>
+      <span class="eyebrow"><span class="pulse"></span>Open to AI Engineer roles — Jaipur</span>
+      <h1>Pranav <span class="accent">Bhawsar</span></h1>
+      <p class="role mono"><b>AI Engineer</b> &nbsp;/&nbsp; multi-agent systems &nbsp;/&nbsp; RAG at production scale</p>
+      <p class="lede">I build and ship <strong>production LLM systems</strong> — multi-agent orchestration, tool-calling, and retrieval pipelines that stay fast and cheap under real traffic. Currently Junior AI Engineer at <strong>Neerja Softwares</strong>, where I scaled a multi-tenant chatbot platform across web, Chrome extensions, WhatsApp and e-commerce.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="#projects">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
+          View Projects</a>
+        <a class="btn btn-ghost" href="Pranav_Bhawsar_AI_Engineer_resume.pdf" download>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Résumé</a>
+        <a class="btn btn-ghost" href="https://github.com/Pranavbh1" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.9 10.9c.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.4-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.3 11.3 0 0 1 6 0C17.6 4.6 18.6 5 18.6 5c.6 1.6.2 2.8.1 3.1.8.9 1.2 1.9 1.2 3.2 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5z"/></svg>
+          GitHub</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/pranavbhawsar/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.5 4.7 5.9V21h-4v-5.6c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9V21H9z"/></svg>
+          LinkedIn</a>
+      </div>
+      <div class="meta-row">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Jaipur, Rajasthan, India</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>p8982667641@gmail.com</span>
+      </div>
+    </div>
+    <div class="avatar-col">
+      <img class="avatar" id="avatar" src="https://avatars.githubusercontent.com/u/137757814?v=4" alt="Pranav Bhawsar" width="182" height="182" loading="eager">
+      <div class="avatar avatar-fb" id="avatarFb" hidden aria-hidden="true">PB</div>
+      <div class="term" aria-hidden="true">
+        <div class="term-bar"><i></i><i></i><i></i></div>
+        <div class="term-body">
+          <div><span class="c">$</span> whoami</div>
+          <div><span class="k">role</span>: <span class="v">"AI Engineer"</span></div>
+          <div><span class="k">stack</span>: <span class="v">"FastAPI · LangGraph"</span></div>
+          <div><span class="k">focus</span>: <span class="v">"agents · RAG · MLOps"</span></div>
+          <div><span class="k">status</span>: <span class="v">"shipping"</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="stats rv" style="margin-top:52px">
+    <div class="stat"><b>1+ yr</b><span>Production AI</span></div>
+    <div class="stat"><b>4+</b><span>Shipped AI systems</span></div>
+    <div class="stat"><b>35</b><span>Public repos</span></div>
+    <div class="stat"><b>IBM</b><span>Certified Data Scientist</span></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="wrap">
+  <div class="sec-head rv"><span class="num">01</span><h2>About</h2><span class="rule"></span></div>
+  <div class="about-grid rv">
+    <div>
+      <p>I'm an AI Engineer based in Jaipur, working at the point where LLM research meets production infrastructure. Most of my day is spent on <strong>agent orchestration, retrieval quality, and the unglamorous parts</strong> — latency budgets, token cost, multi-tenant isolation, and queues that don't fall over.</p>
+      <p>At <strong>Neerja Softwares</strong> I scaled a multi-agent chatbot platform from prototype to a production SaaS serving several deployment surfaces, with tool-calling, MCP integration and RAG pipelines behind it. Before that I led AI development for a fitness app at <strong>Quest Digiflex</strong> — food calorie estimation, pose classification, and an LLM assistant — and configured a Phi-3.5 deployment for deterministic, reproducible inference on a contract basis.</p>
+      <p>I also like the coordination side of the work: I ran an event website and RSVP platform end to end, from client communication to WhatsApp automation for registrations and reminders. Outside of work you'll find me implementing papers (federated learning, Thompson sampling) and contributing to open source — I picked up a <strong>Pull Shark</strong> badge during Hacktoberfest.</p>
+    </div>
+    <dl class="facts">
+      <div class="fact"><dt>Based in</dt><dd>Jaipur, India</dd></div>
+      <div class="fact"><dt>Current</dt><dd>Neerja Softwares</dd></div>
+      <div class="fact"><dt>Education</dt><dd>B.Tech — Medicaps University</dd></div>
+      <div class="fact"><dt>Certified</dt><dd>IBM Data Scientist</dd></div>
+      <div class="fact"><dt>Languages</dt><dd>English · Hindi</dd></div>
+      <div class="fact"><dt>Open to</dt><dd>AI Engineer roles</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="wrap">
+  <div class="sec-head rv"><span class="num">02</span><h2>Experience</h2><span class="rule"></span></div>
+  <div class="tl rv">
+    <div class="tl-item now">
+      <div class="tl-top">
+        <h3>Junior AI Engineer</h3><span class="tl-org">Neerja Softwares Pvt Ltd</span>
+        <span class="tl-date">Jul 2025 — Present</span>
+      </div>
+      <p>Scaled and deployed a production-grade multi-agent AI chatbot platform with tool-calling, orchestration and RAG pipelines. Built multi-tenant memory and deployments across web, Chrome extensions, WhatsApp and e-commerce platforms, tuning for cost and latency. Also led an event website + RSVP platform end to end, automating registration, confirmations and campaign reminders over WhatsApp.</p>
+      <div class="chips">
+        <span class="chip hi">FastAPI</span><span class="chip hi">LangGraph</span><span class="chip hi">LangChain</span><span class="chip">MCP</span><span class="chip">ChromaDB</span><span class="chip">FAISS</span><span class="chip">Redis</span><span class="chip">Celery</span><span class="chip">MinIO</span><span class="chip">PostgreSQL</span><span class="chip">Docker</span>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-top">
+        <h3>AI Intern <span class="mono" style="font-size:12px;color:var(--text-faint)">(onsite, paid)</span></h3><span class="tl-org">Quest Digiflex, Indore</span>
+        <span class="tl-date">May 2025 — Jul 2025</span>
+      </div>
+      <p>Led AI development for a fitness mobile app across three core use cases: a food calorie counter, exercise pose classification and analysis, and a conversational assistant. Fine-tuned pretrained vision models and wired them into a Flask service.</p>
+      <div class="chips">
+        <span class="chip hi">Transformers</span><span class="chip">Fine-tuning</span><span class="chip">MediaPipe</span><span class="chip">OpenCV</span><span class="chip">Flask</span><span class="chip">Gemini</span><span class="chip">PIL</span>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-top">
+        <h3>Data Scientist <span class="mono" style="font-size:12px;color:var(--text-faint)">(contract)</span></h3><span class="tl-org">Fxis</span>
+        <span class="tl-date">Jan 2025 — Feb 2025</span>
+      </div>
+      <p>Configured <span class="mono" style="font-size:13px">microsoft/Phi-3.5-mini-instruct</span> for deterministic, reproducible inference — pinned sampling, containerised serving, and GPU deployment on RunPod.</p>
+      <div class="chips">
+        <span class="chip hi">vLLM</span><span class="chip">HF pipeline</span><span class="chip">RunPod</span><span class="chip">Docker</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="wrap">
+  <div class="sec-head rv"><span class="num">03</span><h2>Featured Projects</h2><span class="rule"></span></div>
+  <div class="cards">
+    <article class="card rv">
+      <div class="card-top">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4M8 16h.01M16 16h.01"/></svg></div>
+        <div><h3>Multi-Agent AI Chatbot Platform</h3><span class="tag">Production SaaS · Neerja Softwares</span></div>
+      </div>
+      <p>A production multi-agent platform with tool-calling, orchestration and RAG. Multi-tenant memory with strict isolation, deployed across web, Chrome extensions, WhatsApp and e-commerce storefronts — with cost and latency tuned for real traffic.</p>
+      <div class="chips"><span class="chip hi">FastAPI</span><span class="chip hi">LangGraph</span><span class="chip">LangChain</span><span class="chip">MCP</span><span class="chip">ChromaDB</span><span class="chip">FAISS</span><span class="chip">Redis</span><span class="chip">Celery</span><span class="chip">MinIO</span><span class="chip">PostgreSQL</span></div>
+    </article>
+
+    <article class="card rv">
+      <div class="card-top">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="12" cy="18" r="3"/><path d="M8.5 7.5 11 15.2M15.5 7.5 13 15.2M9 6h6"/></svg></div>
+        <div><h3>Agent-to-Agent Workflow Orchestration</h3><span class="tag">Prototype · autonomous collaboration</span></div>
+      </div>
+      <p>A multi-agent system where specialised agents collaborate autonomously on product recommendations, sales analysis and discount application. Fully containerised full-stack deployment with isolated per-agent context and scalable orchestration.</p>
+      <div class="chips"><span class="chip hi">LangGraph</span><span class="chip">FastAPI</span><span class="chip">ChromaDB</span><span class="chip">Elasticsearch</span><span class="chip">PostgreSQL</span><span class="chip">Docker</span></div>
+      <div class="links"><a href="https://github.com/Pranavbh1/Agent_2_Agent-communication" target="_blank" rel="noopener">Source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg></a></div>
+    </article>
+
+    <article class="card rv">
+      <div class="card-top">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-7 4 14 2-7h6"/></svg></div>
+        <div><h3>Real-Time RAG Chatbot on Kafka</h3><span class="tag">Prototype · streaming retrieval</span></div>
+      </div>
+      <p>Document Q&amp;A at scale: Kafka-backed asynchronous pipelines decouple ingestion from inference, FAISS handles retrieval, and WebSocket streaming keeps first-token latency low. Includes secure PDF ingestion.</p>
+      <div class="chips"><span class="chip hi">Apache Kafka</span><span class="chip">WebSockets</span><span class="chip">FastAPI</span><span class="chip">FAISS</span><span class="chip">OpenAI API</span><span class="chip">Docker</span></div>
+      <div class="links"><a href="https://github.com/Pranavbh1/kafka" target="_blank" rel="noopener">Source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg></a></div>
+    </article>
+
+    <article class="card rv">
+      <div class="card-top">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-7-10a7 7 0 0 1 14 0c0 5.6-7 10-7 10z"/><path d="M9 11h6M12 8v6"/></svg></div>
+        <div><h3>Fitness AI — Vision + LLM</h3><span class="tag">Quest Digiflex · mobile app</span></div>
+      </div>
+      <p>Three AI features for a fitness app: a food calorie counter from photos, exercise pose classification and form analysis, and a conversational coach. Fine-tuned pretrained vision models and served them behind a Flask API.</p>
+      <div class="chips"><span class="chip hi">Transformers</span><span class="chip">MediaPipe</span><span class="chip">OpenCV</span><span class="chip">Flask</span><span class="chip">Gemini</span></div>
+      <div class="links"><a href="https://github.com/Pranavbh1/Quest_digiflex" target="_blank" rel="noopener">Source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg></a></div>
+    </article>
+
+    <article class="card rv">
+      <div class="card-top">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 7-8"/><path d="M14 7h6v6"/></svg></div>
+        <div><h3>Stock Market AI Agent</h3><span class="tag">Open source · portfolio analysis</span></div>
+      </div>
+      <p>A portfolio management platform that pairs market data with an agentic layer for analysis and recommendations — combining live data ingestion, tool use, and LLM reasoning over a user's holdings.</p>
+      <div class="chips"><span class="chip hi">Python</span><span class="chip">LLM agents</span><span class="chip">Market data APIs</span></div>
+      <div class="links"><a href="https://github.com/Pranavbh1/Stock-Market-AI-Agent" target="_blank" rel="noopener">Source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg></a></div>
+    </article>
+
+    <article class="card rv">
+      <div class="card-top">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M14 3v5h5M8 13h8M8 17h5"/></svg></div>
+        <div><h3>Marketing RAG Agent</h3><span class="tag">Open source · agentic retrieval</span></div>
+      </div>
+      <p>A FastAPI-powered agentic RAG system for marketing workflows — retrieval over campaign and product knowledge, with an agent layer that plans and composes answers rather than doing single-shot lookup.</p>
+      <div class="chips"><span class="chip hi">FastAPI</span><span class="chip">RAG</span><span class="chip">Vector search</span><span class="chip">Python</span></div>
+      <div class="links"><a href="https://github.com/Pranavbh1/marketing-rag-agent" target="_blank" rel="noopener">Source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg></a></div>
+    </article>
+  </div>
+</section>
+
+<!-- OPEN SOURCE -->
+<section id="opensource" class="wrap">
+  <div class="sec-head rv"><span class="num">04</span><h2>From GitHub</h2><span class="rule"></span></div>
+  <p class="rv" style="color:var(--text-dim);margin:-18px 0 26px;font-size:15px">Latest public repositories, pulled live from the GitHub API.</p>
+  <div class="repos" id="repos"><div class="loading">Loading repositories…</div></div>
+  <p class="rv" style="margin-top:22px">
+    <a class="btn btn-ghost" href="https://github.com/Pranavbh1?tab=repositories" target="_blank" rel="noopener">
+      All 35 repositories
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+    </a>
+  </p>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="wrap">
+  <div class="sec-head rv"><span class="num">05</span><h2>Technical Skills</h2><span class="rule"></span></div>
+  <div class="skills rv">
+    <div class="skill"><h3>Languages</h3><div class="chips"><span class="chip hi">Python</span><span class="chip hi">SQL</span></div></div>
+    <div class="skill"><h3>GenAI &amp; LLMs</h3><div class="chips"><span class="chip">Claude</span><span class="chip">OpenAI</span><span class="chip">Gemini</span><span class="chip">Phi-3.5</span><span class="chip">Hugging Face</span><span class="chip">vLLM</span><span class="chip">Fine-tuning</span></div></div>
+    <div class="skill"><h3>Agent Frameworks</h3><div class="chips"><span class="chip hi">LangGraph</span><span class="chip hi">LangChain</span><span class="chip">MCP</span><span class="chip">FastAPI</span><span class="chip">Flask</span></div></div>
+    <div class="skill"><h3>Data &amp; Retrieval</h3><div class="chips"><span class="chip">PostgreSQL</span><span class="chip">MongoDB</span><span class="chip">ChromaDB</span><span class="chip">FAISS</span><span class="chip">Elasticsearch</span><span class="chip">Redis</span></div></div>
+    <div class="skill"><h3>MLOps &amp; Infra</h3><div class="chips"><span class="chip hi">Docker</span><span class="chip">Apache Kafka</span><span class="chip">Celery</span><span class="chip">MLflow</span><span class="chip">Prefect</span><span class="chip">MinIO</span><span class="chip">RunPod</span></div></div>
+    <div class="skill"><h3>Analysis &amp; Viz</h3><div class="chips"><span class="chip">Power BI</span><span class="chip">Matplotlib</span><span class="chip">Seaborn</span><span class="chip">OpenCV</span><span class="chip">MediaPipe</span></div></div>
+  </div>
+
+  <div class="sec-head rv" style="margin-top:56px"><span class="num">06</span><h2>Education &amp; Credentials</h2><span class="rule"></span></div>
+  <div class="cards rv">
+    <article class="card">
+      <div class="card-top">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 9 12 4 2 9l10 5 10-5z"/><path d="M6 11.5V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5"/></svg></div>
+        <div><h3>B.Tech</h3><span class="tag">Medicaps University, Indore</span></div>
+      </div>
+      <p>Bachelor of Technology — foundation in computer science, mathematics and systems.</p>
+    </article>
+    <article class="card">
+      <div class="card-top">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m8.2 14-1.4 7L12 18.5 17.2 21l-1.4-7"/></svg></div>
+        <div><h3>IBM Certified Data Scientist</h3><span class="tag">Innomatics Research Labs, Hyderabad</span></div>
+      </div>
+      <p>Applied data science certification covering statistics, machine learning and the Python analytics stack.</p>
+    </article>
+    <article class="card">
+      <div class="card-top">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v12M18 9v12"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg></div>
+        <div><h3>Pull Shark Badge</h3><span class="tag">Hacktoberfest · open-source contribution</span></div>
+      </div>
+      <p>Earned through merged pull requests to open-source projects during Hacktoberfest.</p>
+    </article>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="wrap">
+  <div class="contact rv">
+    <h2>Let's build something</h2>
+    <p>I'm open to AI Engineer roles in Jaipur and to interesting work on agents, RAG and LLM infrastructure. The fastest way to reach me is email.</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="mailto:p8982667641@gmail.com">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+        Email me</a>
+      <button class="btn btn-ghost" id="copyBtn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copy address</button>
+      <a class="btn btn-ghost" href="https://www.linkedin.com/in/pranavbhawsar/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.5 4.7 5.9V21h-4v-5.6c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9V21H9z"/></svg>
+        LinkedIn</a>
+    </div>
+    <div class="copy-note mono" id="copyNote" role="status" aria-live="polite"></div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap foot-in">
+    <span>© <span id="yr">2026</span> Pranav Bhawsar</span>
+    <span>Built with plain HTML &amp; CSS · hosted on <a href="https://pages.github.com" target="_blank" rel="noopener">GitHub Pages</a></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var d=document;
+
+  /* avatar fallback */
+  var av=d.getElementById('avatar'), fb=d.getElementById('avatarFb');
+  av.addEventListener('error',function(){ av.remove(); fb.hidden=false; });
+  if(av.complete && av.naturalWidth===0){ av.remove(); fb.hidden=false; }
+
+  /* year */
+  d.getElementById('yr').textContent=new Date().getFullYear();
+
+  /* theme (in-memory + system preference; no storage) */
+  var root=d.documentElement, btn=d.getElementById('theme');
+  if(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches){
+    root.setAttribute('data-theme','light');
+  }
+  btn.addEventListener('click',function(){
+    root.setAttribute('data-theme', root.getAttribute('data-theme')==='dark' ? 'light' : 'dark');
+  });
+
+  /* nav border on scroll */
+  var nav=d.getElementById('nav');
+  var onScroll=function(){ nav.classList.toggle('scrolled', window.scrollY>8); };
+  onScroll(); window.addEventListener('scroll',onScroll,{passive:true});
+
+  /* reveal on scroll */
+  if('IntersectionObserver' in window){
+    var rio=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); rio.unobserve(e.target); } });
+    },{rootMargin:'0px 0px -60px 0px',threshold:.06});
+    Array.prototype.forEach.call(d.querySelectorAll('.rv'),function(el){ rio.observe(el); });
+  } else {
+    Array.prototype.forEach.call(d.querySelectorAll('.rv'),function(el){ el.classList.add('in'); });
+  }
+
+  /* active nav link */
+  var linkEls=Array.prototype.slice.call(d.querySelectorAll('#navlinks a'));
+  var secs=linkEls.map(function(a){ return d.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  if('IntersectionObserver' in window && secs.length){
+    var sio=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          linkEls.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href')==='#'+e.target.id); });
+        }
+      });
+    },{rootMargin:'-45% 0px -50% 0px'});
+    secs.forEach(function(s){ sio.observe(s); });
+  }
+
+  /* copy email */
+  var cb=d.getElementById('copyBtn'), note=d.getElementById('copyNote'), mail='p8982667641@gmail.com';
+  cb.addEventListener('click',function(){
+    var done=function(){ note.textContent='Copied — '+mail; setTimeout(function(){note.textContent='';},2600); };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(mail).then(done,function(){ note.textContent=mail; });
+    } else { note.textContent=mail; }
+  });
+
+  /* live repos */
+  var FALLBACK=[
+    {name:'Stock-Market-AI-Agent',description:'Comprehensive portfolio management platform combining market data with an agentic analysis layer.',language:'Python',stargazers_count:0,html_url:'https://github.com/Pranavbh1/Stock-Market-AI-Agent'},
+    {name:'Agent_2_Agent-communication',description:'Agent-to-agent communication with isolated context and orchestrated collaboration.',language:'Python',stargazers_count:0,html_url:'https://github.com/Pranavbh1/Agent_2_Agent-communication'},
+    {name:'marketing-rag-agent',description:'FastAPI-powered agentic RAG system for marketing workflows.',language:'Python',stargazers_count:0,html_url:'https://github.com/Pranavbh1/marketing-rag-agent'},
+    {name:'weather-chatbot-mcp',description:'Weather chatbot built with the Model Context Protocol.',language:'Python',stargazers_count:0,html_url:'https://github.com/Pranavbh1/weather-chatbot-mcp'},
+    {name:'build-your-bot',description:'Bot-building toolkit front end.',language:'TypeScript',stargazers_count:0,html_url:'https://github.com/Pranavbh1/build-your-bot'},
+    {name:'Thompson-Sampling-Policy-for-Dynamic-Participating-Client-Scenario-in-Federated-Learning',description:'Paper implementation: Thompson sampling for dynamic client participation in federated learning.',language:'Jupyter Notebook',stargazers_count:0,html_url:'https://github.com/Pranavbh1/Thompson-Sampling-Policy-for-Dynamic-Participating-Client-Scenario-in-Federated-Learning'}
+  ];
+  var LANG={Python:'#3572A5',JavaScript:'#f1e05a',TypeScript:'#3178c6','Jupyter Notebook':'#DA5B0B',HTML:'#e34c26',CSS:'#563d7c',Java:'#b07219',Go:'#00ADD8'};
+  var box=d.getElementById('repos');
+
+  function esc(s){ return String(s).replace(/[&<>"']/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+
+  function render(list){
+    if(!list.length){ box.innerHTML='<div class="loading">No repositories to show.</div>'; return; }
+    box.innerHTML = list.map(function(r){
+      var name = r.name.length>34 ? r.name.slice(0,32)+'…' : r.name;
+      var desc = r.description || 'No description provided.';
+      var lang = r.language ? '<span class="lang"><i style="background:'+(LANG[r.language]||'#7aa2f7')+'"></i>'+esc(r.language)+'</span>' : '';
+      var star = r.stargazers_count ? '<span>★ '+r.stargazers_count+'</span>' : '';
+      return '<a class="repo" href="'+esc(r.html_url)+'" target="_blank" rel="noopener">'+
+             '<b>'+esc(name)+'</b><p>'+esc(desc)+'</p>'+
+             '<span class="foot">'+lang+star+'</span></a>';
+    }).join('');
+  }
+
+  fetch('https://api.github.com/users/Pranavbh1/repos?sort=pushed&per_page=100')
+    .then(function(r){ if(!r.ok) throw new Error('gh '+r.status); return r.json(); })
+    .then(function(all){
+      var list=all.filter(function(r){ return !r.fork && r.name!=='Pranavbh1' && r.name!=='Pranavbh1.github.io'; })
+                  .sort(function(a,b){
+                    return (b.stargazers_count-a.stargazers_count) || (new Date(b.pushed_at)-new Date(a.pushed_at));
+                  }).slice(0,6);
+      render(list.length?list:FALLBACK);
+    })
+    .catch(function(){ render(FALLBACK); });
+})();
+</script>
+</body>
+</html>
